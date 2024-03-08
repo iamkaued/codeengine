@@ -1,12 +1,22 @@
-const http = require('http');
+function handleRequest(args) {
+  // Construct the response body which includes the arguments and environment variables
+  const responseBody = {
+    args,
+    env: process.env
+  };
 
-const PORT = process.env.PORT || 8080;
+  // Log the response body
+  console.log(`Response body: ${JSON.stringify(responseBody, null, 2)}`);
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World!');
-});
+  // Return the HTTP response structure
+  return {
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: responseBody
+  };
+}
 
-server.listen(PORT, () => {
-  console.log(`Hello World! Server is running on port ${PORT}`);
-});
+// Export the function so it can be invoked by the serverless platform
+module.exports.handleRequest = handleRequest;
